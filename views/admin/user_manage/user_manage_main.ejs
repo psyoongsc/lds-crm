@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 관리 페이지</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="/stylesheets/layout/user_manage/body.css">
+</head>
+<body>
+    
+    <div id="header" class="container">
+        <div class="form-title text-center">
+            <h2 class="text-dark">LDS CRM 영업담당자 관리</h2>
+        </div>
+    </div>
+
+    <% include ../../layout/main/sidebar.ejs %>
+
+    <!-- Main -->
+        <main id="site-main">
+            <div class="container">
+                <div class="box-nav d-flex justify-between">
+                    <a href="/member/signup" class="border-shadow">
+                        <span class="text-gradient">New User <i class="fas fa-user"></i></span>
+                    </a>
+                </div>
+
+                <div>
+                    <form action="#">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>@Email</th>
+                                    <th>Birthday</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%- include('include/_show') %>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </main>
+    <!-- /Main -->
+
+</body>
+</html>

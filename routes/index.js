@@ -8,11 +8,11 @@ router.get('/', function(req, res, next) {
 
 router.get('/main', function(req, res, next) {
   if(req.session.user) {
-    console.log('[INFO] successfully accessed main page. USER: ' + req.session.user.id);
+    console.log('\x1b[33m%s\x1b[0m', '[INFO] successfully accessed main page. USER: ' + req.session.user.id);
     res.render('main', {id: req.session.user.id, name: req.session.user.name});
   }
   else {
-    console.log('[ERROR] not permitted access(login)');
+    console.log('\x1b[36m%s\x1b[0m', '[WARN] not permitted access(login)');
     res.redirect('/')
   }
 })

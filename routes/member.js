@@ -16,7 +16,7 @@ router.post('/login', function (req, res, next) {
             if(err) console.log('[ERROR] /login has some problems.. query is not executed.\n' + err)
             else {
                 if(rows.length == 1 && rows[0].ID == id) {
-                    console.log('[INFO] user login success! USER: ' + id); 
+                    console.log('\x1b[33m%s\x1b[0m', '[INFO] user login success! USER: ' + id); 
                     
                     //create session
                     req.session.user = {
@@ -25,10 +25,10 @@ router.post('/login', function (req, res, next) {
                         authorized: true
                     }
 
-                    res.redirect('/main?id='+ req.session.user.id + '&name=' + req.session.user.name);  
+                    res.redirect('/main');  
                 }
                 else {
-                    console.log('[INFO] user login failed.. USER: ' + id);
+                    console.log('\x1b[33m%s\x1b[0m', '[INFO] user login failed.. USER: ' + id);
                     res.render('index')
                 }
             }
@@ -39,7 +39,7 @@ router.post('/login', function (req, res, next) {
 
 router.get('/logout', function (req, res, next) {
     if(req.session.user) {
-        console.log('[INFO] user logout. USER: ' + `${req.session.user.id}`);
+        console.log('\x1b[33m%s\x1b[0m', '[INFO] user logout. USER: ' + `${req.session.user.id}`);
 
         req.session.destroy(function(err) {
             if(err) {
@@ -51,7 +51,7 @@ router.get('/logout', function (req, res, next) {
         })
     }
     else {
-        console.log('[WARN] not permitted access(logout)');
+        console.log('\x1b[33m%s\x1b[0m', '[WARN] not permitted access(logout)');
         res.redirect('/');
     }
 })
