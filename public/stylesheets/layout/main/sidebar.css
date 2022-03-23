@@ -1,0 +1,28 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    border: .15em solid black;
+}
+
+a:hover {
+    color: white;
+    background-color: black;
+}
+
+.side_link {
+    display: block;
+    text-align: center;
+    padding: 1em 0;
+    border-radius: .5em;
+}
+
+.sidebar {
+    margin-left: 1em;
+    float: left;
+    width: 12%;
+}
