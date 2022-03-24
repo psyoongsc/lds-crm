@@ -4,7 +4,7 @@
         <td><%= users[i].name %></td>
         <td><%= users[i].groupName %></td>
         <td>
-            <a href="#" class="btn border-shadow update" onclick="showPopup()">
+            <a href="#" class="btn border-shadow update" onclick='showPopup("<%= users[i].ID %>")'>
                 <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
             </a>
         </td>
@@ -12,7 +12,7 @@
     <% } %>
 
     <script>
-        function showPopup() {
-            window.open('/authorityManage/user/update', '권한 수정', 'width=400, height=300');
+        function showPopup(id) {
+            window.open('/authorityManage/user/update/' + id, '권한 수정', 'width=200, height=300');
         }
     </script>

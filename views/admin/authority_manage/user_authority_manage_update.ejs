@@ -6,14 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>유저 권한 변경</title>
 
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
     <style>
+        :root{
+        --dark: #2b2d42;
+        --light: #adb5bd;
+        --border: #dee2e6;
+        --border-btn: #edf2f4;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         header {
-            width: 400px;
+            width: 100%;
             background-color: #2b2d42;
             text-align: center;
             padding: 1em 0;
@@ -27,6 +36,47 @@
         .container {
             margin: auto;
         }
+
+        .form-group input[type="text"]:read-only {
+            background-color: #96969671;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: .6em 1em;
+            margin: .5em 0;
+            border: 1px solid var(--border);
+            font-family: 'Barlow', sans-serif;
+            font-size: 1em;
+            border-radius: .2em;
+        }
+
+        #update_authority {
+            padding: .6em 1em;
+            margin: .5em 0;
+            border: 1px solid var(--border);
+            font-family: 'Barlow', sans-serif;
+            font-size: 1em;
+            border-radius: .2em;
+        }
+
+        .form-group .btn{
+            width: 100%;
+            padding: .9em 1em;
+            background-color: #16db93;
+            border: none;
+            font-family: 'PT Sans', sans-serif;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: .2em;
+            margin: .5em 0;
+        }
+
+        .form-group .btn:hover{
+            background-color: var(--dark);
+            color: var(--border);
+        }
     </style>
 </head>
 <body>
@@ -35,5 +85,42 @@
             <h2>유저 권한 변경</h2>
         </div>
     </header>
+
+    <main id="site-main">
+        <div id="update_authority">
+            <div class="form-group">
+                <label for="id">아이디</label>
+                <input type="text" name="id" id="id" value="<%= id %>" readonly>
+            </div>
+            <div class="form-group">
+                <label for="authorityName">권한 그룹</label>
+                <select name="authorityName" id="authority">
+                    <% for(var i=0; i<groups.length; i++) {%>
+                        <option value="<%= groups[i].groupID %>"><%= groups[i].groupName %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn">저장</button>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
+
+<script>
+    $('.btn').click(function() {
+        $.ajax({
+            url: '/authorityManage/user/update',
+            type: 'POST',
+            data: {
+                id: $('#id').val(),
+                authority: $('#authority').val()
+            },
+            success: function() {
+                opener.parent.location.reload();
+                window.close();
+            }
+        })
+    })
+</script>

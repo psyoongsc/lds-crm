@@ -6,6 +6,7 @@ const authorityCheck = require('../public/javascripts/module/authority');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    
     authorityCheck(req.session.user.id, 'AC002', function(result) {
         if(result == 'true') {
             res.render('admin/authority_manage/authority_manage_main');
@@ -35,8 +36,41 @@ router.get('/user', function(req, res, next) {
     })
 })
 
-router.get('/user/update', function(req, res, next) {
-    res.render('admin/authority_manage/user_authority_manage_update')
+router.get('/user/update/:id', function(req, res, next) {
+
+    getConnection((conn) => {
+        var sql = 'SELECT groupID, groupName FROM Groups;'
+
+        conn.query(sql, function(err, rows, fields) {
+            if(err) {
+                console.log('[ERROR] selecting group list has problem\n' + err);
+                res.render('error');
+            }
+            else {
+                res.render('admin/authority_manage/user_authority_manage_update', {id: req.params.id, groups: rows})
+            }
+        })
+        conn.release();
+    })
+})
+
+router.post('/user/update', function(req, res, next) {
+    
+    getConnection((conn) => {
+        var sql = 'UPDATE USER SET groupID=? WHERE ID=?';
+        var params = [req.body.authority, req.body.id];
+
+        conn.query(sql, params, function(err) {
+            if(err) {
+                console.log('[ERROR] altering groupID has problem\n' + err)
+                res.json('negative')
+            }
+            else {
+                res.json('positive')
+            }
+        })
+        conn.release();
+    })
 })
 
 module.exports = router;

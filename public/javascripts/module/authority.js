@@ -19,6 +19,7 @@ function authorityCheck(userID, authorityID, callback) {
                 }
             }
         })
+        conn.release();
     })
 }
 
