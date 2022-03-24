@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var memberRouter = require('./routes/member');
 var adminMemberRouter = require('./routes/admin_member');
+var adminAuthorityRouter = require('./routes/admin_authority');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use(expressSession({
 app.use('/', indexRouter);
 app.use('/member', memberRouter);
 app.use('/memberManage', adminMemberRouter);
+app.use('/authorityManage', adminAuthorityRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
