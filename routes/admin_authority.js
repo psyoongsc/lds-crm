@@ -73,4 +73,43 @@ router.post('/user/update', function(req, res, next) {
     })
 })
 
+router.get('/group' ,function(req, res, next) {
+
+    getConnection((conn) => {
+        var sql = 'SELECT groupName FROM Groups ORDER BY groupID'
+        
+        conn.query(sql, function(err, rows, fields) {
+            if(err) {
+                console.log('[ERROR] selecting group list has problem\n' + err)
+                res.render('error');
+            }
+            else {
+                res.render('admin/authority_manage/group_authority_manage_main', {group: rows});
+            }
+        })
+
+        conn.release();
+    })
+})
+
+router.get('/group/:id', function(req, res, next) {
+    
+    getConnection((conn) => {
+        var sql = 'SELECT a.groupID, b.authorityID, b.authorityName, b.authorityDetail from (select * from GroupAuthority a where groupID=?) a right outer join Authority b on a.authorityID=b.authorityID ORDER BY b.authorityID;'
+        var param = [req.params.id]
+
+        conn.query(sql, param, function(err, rows, fields) {
+            if(err) {
+                console.log('[ERROR] selecting authority list has problem\n' + err)
+                res.render('error');
+            }
+            else {
+                res.json({authority: rows});
+            }
+        })
+    })
+})
+
+router.post
+
 module.exports = router;

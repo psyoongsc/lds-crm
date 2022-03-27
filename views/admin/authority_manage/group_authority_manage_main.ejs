@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDS CRM</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="/stylesheets/layout/authority_manage/body.css">
+</head>
+<body>
+    
+    <div id="header" class="container">
+        <div class="form-title text-center">
+            <h2 class="text-dark">LDS CRM 그룹 권한 관리</h2>
+        </div>
+    </div>
+
+    <% include ../../layout/main/sidebar.ejs %>
+
+    <!-- Main -->
+        <main id="site-main">
+            <div class="container">
+
+                <div>
+                    <form action="#">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <%- include('include/_showGroups') %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%- include('include/_showAuthorities') %>
+                            </tbody>
+                        </table>
+
+                        <div class="box-nav d-flex text-center">
+                            <a href="" class="border-shadow">
+                                <span class="text-gradient">그룹삭제</i></span>
+                            </a>
+                            <a href="" class="border-shadow">
+                                <span class="text-gradient">그룹추가</i></span>
+                            </a>
+                            <a href="" class="border-shadow">
+                                <span class="text-gradient">권한수정</i></span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    <!-- /Main -->
+
+</body>
+</html>
