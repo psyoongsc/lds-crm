@@ -12,11 +12,13 @@ router.use(function(req, res, next) {
                 next();
             }
             else {
+                console.log('[INFO] user: ' + req.session.user.id + ' has not enough authority')
                 res.render('authorityError');
             }
         })
     }
     else {
+        console.log('[WARN] not permitted access')
         res.redirect('/');
     }
 })
