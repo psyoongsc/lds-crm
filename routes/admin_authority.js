@@ -39,7 +39,7 @@ router.get('/user', function(req, res, next) {
 router.get('/user/update/:id', function(req, res, next) {
 
     getConnection((conn) => {
-        var sql = 'SELECT groupID, groupName FROM Groups;'
+        var sql = 'SELECT groupID, groupName FROM Groups WHERE isRemove = 0 ORDER BY groupID;'
 
         conn.query(sql, function(err, rows, fields) {
             if(err) {
@@ -76,7 +76,7 @@ router.post('/user/update', function(req, res, next) {
 router.get('/group' ,function(req, res, next) {
 
     getConnection((conn) => {
-        var sql = 'SELECT groupName FROM Groups ORDER BY groupID'
+        var sql = 'SELECT groupID, groupName FROM Groups WHERE isRemove = 0 ORDER BY groupID'
         
         conn.query(sql, function(err, rows, fields) {
             if(err) {
@@ -92,11 +92,11 @@ router.get('/group' ,function(req, res, next) {
     })
 })
 
-router.get('/group/:id', function(req, res, next) {
+router.post('/group', function(req, res, next) {
     
     getConnection((conn) => {
         var sql = 'SELECT a.groupID, b.authorityID, b.authorityName, b.authorityDetail from (select * from GroupAuthority a where groupID=?) a right outer join Authority b on a.authorityID=b.authorityID ORDER BY b.authorityID;'
-        var param = [req.params.id]
+        var param = [req.body.id]
 
         conn.query(sql, param, function(err, rows, fields) {
             if(err) {
@@ -107,9 +107,72 @@ router.get('/group/:id', function(req, res, next) {
                 res.json({authority: rows});
             }
         })
+
+        conn.release();
     })
 })
 
-router.post
+router.get('/group/remove', function(req, res, next) {
+
+    getConnection((conn) => {
+        var sql = 'SELECT groupID, groupName FROM Groups WHERE isRemove = 0 ORDER BY groupID';
+
+        conn.query(sql, function(err, rows, fields) {
+            if(err) {
+                console.log('[ERROR] selecting group list has problem\n' + err);
+                res.render('error');
+            }
+            else {
+                res.render('admin/authority_manage/group_authority_manage_remove', {groups: rows})
+            }
+        })
+        conn.release();
+    })
+})
+
+router.post('/group/remove', function(req, res, next) {
+    
+    getConnection((conn) => {
+        var sql = 'UPDATE Groups SET isRemove=1 WHERE groupID=?'
+        var params = [req.body.id];
+
+        conn.query(sql, params, function(err) {
+            if(err) {
+                console.log('[ERROR] removing group has problme\n' + err);
+                res.render('error');
+            }
+            else
+            {
+                res.json({result: "success"})
+            }
+        })
+
+        conn.release();
+    })
+})
+
+router.get('/group/create', function(req, res, next) {
+    res.render('admin/authority_manage/group_authority_manage_create');
+})
+
+router.post('/group/create', function(req, res, next) {
+
+    getConnection((conn) => {
+        var sql = 'INSERT INTO Groups(groupName) VALUES(?);'
+        var params = [req.body.groupName];
+
+        conn.query(sql, params, function(err) {
+            if(err) {
+                console.log('[ERROR] creating new group has problem\n' + err);
+                res.render('error');
+            }
+            else {
+                res.json({result: "success"})
+            }
+        })
+
+        conn.release();
+    })
+})
 
 module.exports = router;

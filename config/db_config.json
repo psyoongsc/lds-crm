@@ -4,5 +4,6 @@
     "password": "osspsy",
     "database": "ldscrm",
     "connectionLimit": 10,
-    "timezone": "Asia/Seoul"
+    "timezone": "Asia/Seoul",
+    "multipleStatements": true
 }
