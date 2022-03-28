@@ -1,8 +1,0 @@
-{
-    "host": "ldscrm.koreacentral.cloudapp.azure.com",
-    "user": "crmadmin",
-    "password": "osspsy",
-    "database": "ldscrm",
-    "connectionLimit": 10,
-    "timezone": "Asia/Seoul"
-}
