@@ -37,7 +37,7 @@ border-radius: .5em;
 font-family: 'Barlow', sans-serif;
 }
 
-#site-main .container .box-nav > a{
+#site-main .container .box-nav > button{
 font-size: 1em;
 padding: .5em 1em;
 }

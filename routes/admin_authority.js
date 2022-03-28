@@ -175,4 +175,40 @@ router.post('/group/create', function(req, res, next) {
     })
 })
 
+router.post('/group/update-authority', function(req, res, next) {
+
+    getConnection((conn) => {
+        var sql = 'DELETE FROM GroupAuthority WHERE groupID = ?;'
+        var params = [req.body.id];
+
+        conn.query(sql, params, function(err) {
+            if(err) {
+                console.log('[ERROR] deleting authorities for group has problem\n' + err)
+                res.render('error');
+            }
+            else {
+                const IDs = JSON.parse(req.body.authorityIDs);
+                const Values = JSON.parse(req.body.checkedValues);
+
+                sql = 'INSERT INTO GroupAuthority(groupID, authorityID) VALUES(?, ?);'
+                for(var i=0; i<IDs.length; i++) {
+                    if(Values[i]) {
+                        var params = [req.body.id, IDs[i]]
+                        conn.query(sql, params, function(err) {
+                            if(err) {
+                                console.log('[ERROR] inserting authorities for group has problem\n' + err)
+                                res.render('error');
+                            }
+                        })
+                    }
+                }
+
+                res.json({result: "success"})
+            }
+        })
+
+        conn.release();
+    })
+})
+
 module.exports = router;

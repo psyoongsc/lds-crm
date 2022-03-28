@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label for="groupName">그룹</label>
                             <select name="groupName" id="groupName">
-                                <option value="" selected disabled hidden>선택해주세요</option>
+                                <option value="" selected disabled>선택해주세요</option>
                                 <%- include('include/_showGroups') %>
                             </select>
                             <a href="" id="group_create_btn" class="border-shadow">
@@ -54,10 +54,9 @@
                         </table>
 
                         <div class="box-nav d-flex text-center">
-
-                            <a href="" class="border-shadow">
+                            <button id="group_authority_apply">
                                 <span class="text-gradient">적용<i class="fa-solid fa-floppy-disk"></i></span>
-                            </a>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -91,9 +90,9 @@
                         const cell4 = newRow.insertCell(3);
 
                         if(result.authority[i].groupID != null)
-                            cell1.innerHTML = '<input type="checkbox" checked>';
+                            cell1.innerHTML = '<input type="checkbox" value="' + result.authority[i].authorityID + '" checked>';
                         else
-                            cell1.innerHTML = '<input type="checkbox" >';
+                            cell1.innerHTML = '<input type="checkbox" value="' + result.authority[i].authorityID + '">';
                         cell2.innerText = result.authority[i].authorityID;
                         cell3.innerText = result.authority[i].authorityName;
                         cell4.innerText = result.authority[i].authorityDetail;
@@ -108,6 +107,30 @@
 
         $('#group_remove_btn').on('click', function() {
             window.open('/authorityManage/group/remove', '그룹 삭제', 'width=200, height=250');
+        })
+
+        $('#group_authority_apply').on('click', function() {
+            var authorityIDs = [];
+            var checkedValues = [];
+            var list = $('input[type="checkbox"]');
+            
+            for(var i=0; i<list.length; i++) {
+                authorityIDs.push(list[i].value);
+                checkedValues.push(list[i].checked)
+            }
+
+            $.ajax({
+                url: '/authorityManage/group/update-authority',
+                type: 'POST',
+                data: {
+                    id: $('#groupName').val(),
+                    authorityIDs: JSON.stringify(authorityIDs),
+                    checkedValues: JSON.stringify(checkedValues)
+                },
+                success: function(result) {
+                    alert('정상적으로 반영되었습니다.')
+                }
+            })
         })
     })
 </script>
