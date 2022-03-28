@@ -4,17 +4,27 @@ var router = express.Router();
 
 const authorityCheck = require('../public/javascripts/module/authority');
 
+// 로그인 세션 + 권한 체크 미들웨어
+router.use(function(req, res, next) {
+    if(req.session.user) {
+        authorityCheck(req.session.user.id, 'AC002', function(result) {
+            if(result == 'true') {
+                next();
+            }
+            else {
+                res.render('authorityError');
+            }
+        })
+    }
+    else {
+        res.redirect('/');
+    }
+})
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     
-    authorityCheck(req.session.user.id, 'AC002', function(result) {
-        if(result == 'true') {
-            res.render('admin/authority_manage/authority_manage_main');
-        }
-        else {
-            res.redirect('/main');
-        }
-    })
+    res.render('admin/authority_manage/authority_manage_main');
 });
 
 router.get('/user', function(req, res, next) {
