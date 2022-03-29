@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LDS CRM</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+
+    <main id="site-main">
+        <div class="container">
+            <div class="form-title text-center">
+                <h2 class="text-dark">새로운 영업담당자 등록</h2>
+                <span class="text-light">아래 형식에 맞추어 등록해주세요.</span>
+            </div>
+
+            <div id="new_user">
+                <div class="form-group">
+                    <label for="id" class="text-light">아이디</label><p></p>
+                    <input type="text" name="id" id="id" value="" placeholder="영문, 숫자로 구성">
+                    <button type="button" id="iddupchk" class="btn text-dark update">중복체크</button>
+                </div>
+                <div class="form-group">
+                    <label for="pw" class="text-light">패스워드</label>
+                    <input type="password" name="pw" id="pw" value="" placeholder="특수문자, 영문, 숫자로 구성된 비밀번호">
+                </div>
+                <div class="form-group">
+                    <label for="pw_re" class="text-light">패스워드 재입력</label>
+                    <input type="password" name="pw_re" id="pw_re" value="" placeholder="비밀번호 재입력">
+                </div>
+                <div class="form-group">
+                    <label for="name" class="text-light">이름</label>
+                    <input type="text" name="name" id="name" value="" placeholder="ex) 홍길동">
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="text-light">전화번호</label>
+                    <input type="tel" name="phone" id="phone" value="" placeholder="ex) 01012341234">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="text-light">이메일</label>
+                    <input type="email" name="email" id="email" value="" placeholder="ex) example@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="dept" class="text-light">부서</label><p></p>
+                    <select name="dept">
+                        <option value="" selected disabled>선택해주세요</option>
+                        <%- include('include/_showDept') %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dept" class="text-light">직책</label><p></p>
+                    <select name="dept">
+                        <option value="" selected disabled>선택해주세요</option>
+                        <%- include('include/_showPos') %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn text-dark update" id="signup">회원가입</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+    $("#iddupchk").click(function() {
+        if(idBlankChk() == 0) { 
+            alert("아이디를 입력해 주세요.")
+            return; 
+        }
+
+        $.ajax({
+            url: '/memberManage/iddupchk',
+            type: 'POST',
+            data: {
+                id: $("#id").val()
+            },
+            success: function(result) {
+                if(result == 'positive') {
+                    $("#id").attr('disabled','true');
+                    $("#iddupchk").attr('disabled', 'true');
+                    alert("사용 가능한 아이디 입니다.")
+                } else {
+                    alert("동일한 아이디가 이미 존재합니다.")
+                }
+            }
+        })
+    })
+
+    $("#signup").click(function() {
+        if($("#iddupchk").attr('disabled') != 'disabled') {
+            alert("아이디 중복체크를 해주세요.")
+            return;
+        }
+
+        if(blankChk() == 0) {
+            alert("모든 정보를 입력해 주세요.");
+            return;
+        }
+
+        if(pw_chk() == 0) {
+            alert("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        $.ajax({
+            url: '/member/signup',
+            type: 'POST',
+            data: {
+                id: $("#id").val(),
+                pw: $("#pw").val(),
+                name: $("#name").val(),
+                birthday: $("#birthday").val(),
+                phone: $("#phone").val(),
+                email: $("#email").val()
+            },
+            success: function(result) {
+                if(result == 'positive') {
+                    alert("회원가입이 완료 되었습니다.")
+                    window.location.href = 'http://localhost:8080/member';
+                } else {
+                    alert("회원가입에 문제가 생겼습니다. 잠시 후 다시 시도해 주세요.")
+                }
+            }
+        })
+    })
+
+    function idBlankChk() {
+        var id = $("#id").val();
+
+        if(id =="") { return 0; }
+        else { return 1; }
+    }
+
+    function pw_chk() {
+        var pw = $("#pw").val();
+        var pw_re = $("#pw_re").val();
+
+        if(pw == pw_re) { return 1; }
+        else { return 0; }
+    }
+
+    function blankChk() {
+        var id = $("#id").val();
+        var pw = $("#pw").val();
+        var name = $("#name").val();
+        var birthday = $("#birthday").val();
+        var phone = $("#phone").val();
+        var email = $("#email").val();
+
+        var data = [id, pw, name, birthday, phone, email];
+        for(var i=0; i<data.length; i++) {
+            if(data[i] == '') { return 0; }
+        }
+
+        return 1;
+    }
+</script>
+</html>
