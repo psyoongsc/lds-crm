@@ -13,35 +13,26 @@
     <main id="site-main">
         <div class="container">
             <div class="form-title text-center">
-                <h2 class="text-dark">새로운 영업담당자 등록</h2>
-                <span class="text-light">아래 형식에 맞추어 등록해주세요.</span>
+                <h2 class="text-dark">영업담당자 정보 수정</h2>
+                <span class="text-light">아래 형식에 맞추어 수정해주세요.</span>
             </div>
 
-            <div id="new_user">
+            <div id="update_user">
                 <div class="form-group">
                     <label for="id" class="text-light">아이디</label><p></p>
-                    <input type="text" name="id" id="id" value="" placeholder="영문, 숫자로 구성">
-                    <button type="button" id="iddupchk" class="btn text-dark update">중복체크</button>
-                </div>
-                <div class="form-group">
-                    <label for="pw" class="text-light">패스워드</label>
-                    <input type="password" name="pw" id="pw" value="" placeholder="특수문자, 영문, 숫자로 구성된 비밀번호">
-                </div>
-                <div class="form-group">
-                    <label for="pw_re" class="text-light">패스워드 재입력</label>
-                    <input type="password" name="pw_re" id="pw_re" value="" placeholder="비밀번호 재입력">
+                    <input type="text" name="id" id="id" value="<%= user[0].ID %>" placeholder="영문, 숫자로 구성" disabled>
                 </div>
                 <div class="form-group">
                     <label for="name" class="text-light">이름</label>
-                    <input type="text" name="name" id="name" value="" placeholder="ex) 홍길동">
+                    <input type="text" name="name" id="name" value="<%= user[0].name %>" placeholder="ex) 홍길동">
                 </div>
                 <div class="form-group">
                     <label for="phone" class="text-light">전화번호</label>
-                    <input type="tel" name="phone" id="phone" value="" placeholder="ex) 010-1234-1234">
+                    <input type="tel" name="phone" id="phone" value="<%= user[0].phone %>" placeholder="ex) 010-1234-1234">
                 </div>
                 <div class="form-group">
                     <label for="email" class="text-light">이메일</label>
-                    <input type="email" name="email" id="email" value="" placeholder="ex) example@gmail.com">
+                    <input type="email" name="email" id="email" value="<%= user[0].email %>" placeholder="ex) example@gmail.com">
                 </div>
                 <div class="form-group">
                     <label for="dept" class="text-light">부서</label><p></p>
@@ -58,59 +49,30 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <button type="button" class="btn text-dark update" id="signup">등록</button>
+                    <button type="button" class="btn text-dark update" id="signup">저장</button>
                 </div>
             </div>
         </div>
     </main>
 </body>
 <script>
-    $("#iddupchk").click(function() {
-        if(idBlankChk() == 0) { 
-            alert("아이디를 입력해 주세요.")
-            return; 
-        }
-
-        $.ajax({
-            url: '/memberManage/iddupchk',
-            type: 'POST',
-            data: {
-                id: $("#id").val()
-            },
-            success: function(result) {
-                if(result == 'positive') {
-                    $("#id").attr('disabled','true');
-                    $("#iddupchk").attr('disabled', 'true');
-                    alert("사용 가능한 아이디 입니다.")
-                } else {
-                    alert("동일한 아이디가 이미 존재합니다.")
-                }
-            }
-        })
+    $(document).ready(function() {
+        $('#dept').val('<%= user[0].deptID %>').prop('selected', true)
+        $('#pos').val('<%= user[0].posID %>').prop('selected', true)
     })
 
     $("#signup").click(function() {
-        if($("#iddupchk").attr('disabled') != 'disabled') {
-            alert("아이디 중복체크를 해주세요.")
-            return;
-        }
 
         if(blankChk() == 0) {
             alert("모든 정보를 입력해 주세요.");
             return;
         }
 
-        if(pw_chk() == 0) {
-            alert("비밀번호가 일치하지 않습니다.");
-            return;
-        }
-
         $.ajax({
-            url: '/memberManage/create',
+            url: '/memberManage/update',
             type: 'POST',
             data: {
                 id: $("#id").val(),
-                pw: $("#pw").val(),
                 name: $("#name").val(),
                 phone: $("#phone").val(),
                 email: $("#email").val(),
@@ -119,41 +81,25 @@
             },
             success: function(result) {
                 if(result == 'positive') {
-                    alert("회원가입이 완료 되었습니다.")
+                    alert("수정이 완료 되었습니다.")
                     window.parent.location.reload();
                     window.close();
                 } else {
-                    alert("회원가입에 문제가 생겼습니다. 잠시 후 다시 시도해 주세요.")
+                    alert("수정에 문제가 생겼습니다. 잠시 후 다시 시도해 주세요.")
                 }
             }
         })
     })
 
-    function idBlankChk() {
-        var id = $("#id").val();
-
-        if(id =="") { return 0; }
-        else { return 1; }
-    }
-
-    function pw_chk() {
-        var pw = $("#pw").val();
-        var pw_re = $("#pw_re").val();
-
-        if(pw == pw_re) { return 1; }
-        else { return 0; }
-    }
-
     function blankChk() {
         var id = $("#id").val();
-        var pw = $("#pw").val();
         var name = $("#name").val();
         var phone = $("#phone").val();
         var email = $("#email").val();
         var dept = $("#dept").val() || "";
         var pos = $("#pos").val() || "";
 
-        var data = [id, pw, name, phone, email, dept, pos];
+        var data = [id, name, phone, email, dept, pos];
         for(var i=0; i<data.length; i++) {
             if(data[i] == '') { return 0; }
         }

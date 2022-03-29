@@ -7,7 +7,7 @@
         <td><%= users[i].deptName %></td>
         <td><%= users[i].posName %></td>
         <td>
-            <a href="/membermanage/update/<%= users[i].ID %>" class="btn border-shadow update">
+            <a class="btn border-shadow update" onclick='updateButton("<%= users[i].ID %>")'>
                 <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
             </a>
             <a class="btn border-shadow delete" onclick='deleteButton("<%= users[i].ID %>")'>
@@ -15,4 +15,34 @@
             </a>
         </td>
     </tr>
-    <% } %>
+<% } %>
+
+<script>
+    function updateButton(user) {
+        window.open('/memberManage/update/'+user, '영업담당자 수정', 'width=1200, height=720'); 
+    }
+
+    function deleteButton(user) {
+        var input = prompt("정말로 해당 ID를 삭제하시겠습니까?\n앞으로 해당 유저의 ID로는 계정을 만들 수 없습니다.\n삭제하고자 하는 ID를 입력하시면 유저가 삭제됩니다.\n\n해당 담당자의 정보를 포함해 모든 활동 내용은 유지합니다.", "");
+        if(input == user) {
+            $.ajax({
+                url: '/memberManage/remove',
+                type: 'POST',
+                data: {
+                    id: user
+                },
+                success: function(result) {
+                    if(result == 'positive') {
+                        alert("정상적으로 삭제하였습니다.")
+                        location.reload();
+                    } else {
+                        alert("삭제에 실패하였습니다.")
+                    }
+                }
+            })
+        }
+        else {
+            alert("아이디 재입력을 실패하였습니다.")
+        }
+    }
+</script>
