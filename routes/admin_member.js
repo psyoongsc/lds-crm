@@ -80,6 +80,8 @@ router.post('/create', function(req, res, next) {
                 res.json('positive')
             }
         })
+        
+        conn.release();
     })
 })
 
@@ -101,6 +103,8 @@ router.get('/update/:id', function(req, res, next) {
                 res.render('admin/user_manage/user_manage_update', {user: rows[0], depts: rows[1], positions: rows[2]})
             }
         })
+
+        conn.release();
     })
 })
 
@@ -122,6 +126,8 @@ router.post('/update', function(req, res, next) {
                 res.json('positive')
             }
         })
+
+        conn.release();
     })
 })
 
