@@ -1,6 +1,27 @@
 var express = require('express');
-const getConnection = require('../config/database');
 var router = express.Router();
+
+const getConnection = require('../config/database');
+const authorityCheck = require('../public/javascripts/module/authority')
+
+// 로그인 세션 + 권한 체크 미들웨어
+router.use(function(req, res, next) {
+    if(req.session.user) {
+        authorityCheck(req.session.user.id, 'AC003', function(result) {
+            if(result == 'true') {
+                next();
+            }
+            else {
+                console.log('[INFO] user: ' + req.session.user.id + ' has not enough authority')
+                res.render('authorityError');
+            }
+        })
+    }
+    else {
+        console.log('[WARN] not permitted access')
+        res.redirect('/');
+    }
+})
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -80,7 +101,7 @@ router.post('/create', function(req, res, next) {
                 res.json('positive')
             }
         })
-        
+
         conn.release();
     })
 })
