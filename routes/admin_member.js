@@ -28,7 +28,7 @@ router.use(function(req, res, next) {
 router.get('/', function(req, res, next) {
 
     getConnection((conn) => {
-        var sql = 'SELECT USER.ID, USER.name, USER.phone, USER.email, DEPT.deptName, Position.posName FROM USER, DEPT, Position WHERE USER.deptID=DEPT.deptID AND USER.posID=Position.posID AND USER.isDelete=0 ORDER BY USER.deptID, USER.posID;';
+        var sql = 'SELECT USER.ID, USER.name, USER.phone, USER.email, DEPT.deptName, Positions.posName FROM USER, DEPT, Positions WHERE USER.deptID=DEPT.deptID AND USER.posID=Positions.posID AND USER.isDelete=0 ORDER BY USER.deptID, USER.posID;';
 
         conn.query(sql, function(err, rows, feilds) {
             if(err) {
@@ -48,7 +48,7 @@ router.get('/create', function(req, res, next) {
     
     getConnection((conn) => {
         var sql = 'SELECT deptID, deptName FROM DEPT WHERE isDelete=0 ORDER BY deptID;'
-        sql = sql + 'SELECT posID, posName FROM Position WHERE isDelete=0 ORDER BY posID;'
+        sql = sql + 'SELECT posID, posName FROM Positions WHERE isDelete=0 ORDER BY posID;'
         conn.query(sql, function(err, rows, fields) {
             if(err) {
                 console.log('[ERROR] selecting dept list has problem\n' + err)
@@ -121,7 +121,7 @@ router.get('/update/:id', function(req, res, next) {
     getConnection((conn) => {
         var sql = 'SELECT ID, name, phone, email, deptID, posID FROM USER WHERE ID=?;'
         sql = sql + 'SELECT deptID, deptName FROM DEPT WHERE isDelete=0 ORDER BY deptID;'
-        sql = sql + 'SELECT posID, posName FROM Position WHERE isDelete=0 ORDER BY posID;'
+        sql = sql + 'SELECT posID, posName FROM Positions WHERE isDelete=0 ORDER BY posID;'
         var param = [req.params.id]
 
         conn.query(sql, param, function(err, rows, fields) {
