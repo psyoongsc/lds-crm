@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDS CRM</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="/stylesheets/layout/dept_manage/body.css">
+</head>
+<body>
+    
+    <div id="header" class="container">
+        <div class="form-title text-center">
+            <h2 class="text-dark">LDS CRM 부서 및 직책 관리</h2>
+        </div>
+    </div>
+
+    <% include ../../layout/main/sidebar.ejs %>
+
+    <!-- Main -->
+        <main id="site-main">
+            <div class="container">
+
+                <div>
+                    <form action="#" style="margin-left:5%; float: left">
+                        <div class="box-nav d-flex justify-between">
+                            <a href="#" class="border-shadow" id="new-dept">
+                                <span class="text-gradient"><i class="fa-solid fa-building"></i>부서 추가</span>
+                            </a>
+                        </div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>부서명</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%- include('include/_showDept') %>
+                            </tbody>
+                        </table>
+                    </form>
+                    <form action="#" style="width: 30%; float: right; margin-right: 5%">
+                        <div class="box-nav d-flex justify-between">
+                            <a href="#" class="border-shadow" id="new-pos">
+                                <span class="text-gradient"><i class="fa-solid fa-user"></i>직책 추가</span>
+                            </a>
+                        </div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>직책</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%- include('include/_showPos') %>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </main>
+    <!-- /Main -->
+
+</body>
+</html>
+
+<script>
+    $('#new-dept').on('click', function() {
+        window.open('/deptManage/dept/create', '부서 추가', 'width=200, height=250');
+    })
+
+    $('#new-pos').on('click', function() {
+        window.open('/deptManage/position/create', '직책 추가', 'width=200, height=250');
+    })
+</script>

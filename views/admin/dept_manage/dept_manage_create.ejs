@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부서 추가</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <style>
+        :root{
+        --dark: #2b2d42;
+        --light: #adb5bd;
+        --border: #dee2e6;
+        --border-btn: #edf2f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            width: 100%;
+            background-color: #2b2d42;
+            text-align: center;
+            padding: 1em 0;
+        }
+        div{
+            display: block;
+        }
+        h2{
+            color: white;
+        }
+        .container {
+            margin: auto;
+        }
+
+        .form-group input[type="text"]:read-only {
+            background-color: #96969671;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: .6em 1em;
+            margin: .5em 0;
+            border: 1px solid var(--border);
+            font-family: 'Barlow', sans-serif;
+            font-size: 1em;
+            border-radius: .2em;
+        }
+
+        #create_dept {
+            padding: .6em 1em;
+            margin: .5em 0;
+            border: 1px solid var(--border);
+            font-family: 'Barlow', sans-serif;
+            font-size: 1em;
+            border-radius: .2em;
+        }
+
+        .form-group .btn{
+            width: 100%;
+            padding: .9em 1em;
+            background-color: #16db93;
+            border: none;
+            font-family: 'PT Sans', sans-serif;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: .2em;
+            margin: .5em 0;
+        }
+
+        .form-group .btn:hover{
+            background-color: var(--dark);
+            color: var(--border);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h2>부서 추가</h2>
+        </div>
+    </header>
+
+    <main id="site-main">
+        <div id="create_dept">
+            <div class="form-group">
+                <label for="deptName">부서명</label>
+                <input type="text" name="deptName" id="deptName" placeholder="입력해주세요." value="">
+            </div>
+            <div class="form-group">
+                <button class="btn">추가</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+<script>
+    $('.btn').click(function() {
+        $.ajax({
+            url: '/deptManage/dept/create',
+            type: 'POST',
+            data: {
+                deptName: $('#deptName').val()
+            },
+            success: function() {
+                opener.parent.location.reload();
+                window.close();
+            }
+        })
+    })
+</script>

@@ -1,0 +1,43 @@
+<% for(var i=0; i<pos.length; i++) {%>
+    <tr>
+        <td><%= pos[i].posName %></td>
+        <td>
+            <a href="" class="btn border-shadow update" onclick='updateButton("<%= pos[i].posID %>")'>
+                <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+            </a>
+            <a href="" class="btn border-shadow delete" onclick='deleteButton("<%= pos[i].posID %>", "<%= pos[i].posName %>")'>
+                <span class="text-gradient"><i class="fas fa-times"></i></span>
+            </a>
+        </td>
+    </tr>
+<% } %>
+
+<script>
+    function updateButton(id) {
+        window.open('/deptManage/position/update/'+id, '직책 수정', 'width=200, height=250'); 
+    }
+
+    function deleteButton(id, name) {
+        var input = prompt("정말로 해당 직책을 삭제하시겠습니까?\n직책을 삭제하더라도 해당 직책을 가진 유저에게는 영향이 없습니다.\n\n정말로 삭제를 원하시면 직책을 입력해주세요.", "");
+        if(input == name) {
+            $.ajax({
+                url: '/deptManage/position/delete',
+                type: 'POST',
+                data: {
+                    posID: id
+                },
+                success: function(result) {
+                    if(result == 'positive') {
+                        alert("정상적으로 삭제하였습니다.")
+                        location.reload();
+                    } else {
+                        alert("삭제에 실패하였습니다.")
+                    }
+                }
+            })
+        }
+        else {
+            alert("직책 입력에 실패하였습니다.")
+        }
+    }
+</script>
