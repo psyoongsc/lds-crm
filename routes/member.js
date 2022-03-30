@@ -61,39 +61,4 @@ router.get('/logout', function (req, res, next) {
     }
 })
 
-router.post('/test', function(req, res, next) {
-    var body = req.body;
-    var id = req.body.id;
-    var pw = req.body.pw;
-
-    password.comparePWwithHASH(id, pw, (err, result) => {
-        if(err) {
-            console.log('[ERROR] login has problem\n' + err);
-            res.render('index')
-        }
-        else {
-            if(result == 'positive') {
-                authorityCheck(id, 'AC001', function(result) {
-                    if(result == 'true') {
-                        console.log('\x1b[33m%s\x1b[0m', '[INFO] user login success! USER: ' + id); 
-                
-                        //create session
-                        req.session.user = {
-                            id: rows[0].ID,
-                            name: rows[0].name,
-                            authorized: true
-                        }
-    
-                        res.redirect('/main');  
-                    }
-                    else {
-                        console.log('\x1b[33m%s\x1b[0m', '[INFO] user login failed.. USER: ' + id + ' has not enogh authority');
-                        res.render('index')
-                    }
-                })
-            }
-        }
-    });
-})
-
 module.exports = router;
