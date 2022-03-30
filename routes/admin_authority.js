@@ -51,7 +51,7 @@ router.get('/user', function(req, res, next) {
 router.get('/user/update/:id', function(req, res, next) {
 
     getConnection((conn) => {
-        var sql = 'SELECT groupID, groupName FROM Groups WHERE isRemove = 0 ORDER BY groupID;'
+        var sql = 'SELECT groupID, groupName FROM Groups WHERE isDelete = 0 ORDER BY groupID;'
 
         conn.query(sql, function(err, rows, fields) {
             if(err) {
@@ -88,7 +88,7 @@ router.post('/user/update', function(req, res, next) {
 router.get('/group' ,function(req, res, next) {
 
     getConnection((conn) => {
-        var sql = 'SELECT groupID, groupName FROM Groups WHERE isRemove = 0 ORDER BY groupID'
+        var sql = 'SELECT groupID, groupName FROM Groups WHERE isDelete = 0 ORDER BY groupID'
         
         conn.query(sql, function(err, rows, fields) {
             if(err) {
@@ -127,7 +127,7 @@ router.post('/group', function(req, res, next) {
 router.get('/group/remove', function(req, res, next) {
 
     getConnection((conn) => {
-        var sql = 'SELECT groupID, groupName FROM Groups WHERE isRemove = 0 ORDER BY groupID';
+        var sql = 'SELECT groupID, groupName FROM Groups WHERE isDelete = 0 ORDER BY groupID';
 
         conn.query(sql, function(err, rows, fields) {
             if(err) {
@@ -145,7 +145,7 @@ router.get('/group/remove', function(req, res, next) {
 router.post('/group/remove', function(req, res, next) {
     
     getConnection((conn) => {
-        var sql = 'UPDATE Groups SET isRemove=1 WHERE groupID=?'
+        var sql = 'UPDATE Groups SET isDelete=1 WHERE groupID=?'
         var params = [req.body.id];
 
         conn.query(sql, params, function(err) {
