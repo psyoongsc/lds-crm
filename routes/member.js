@@ -5,47 +5,41 @@ var getConnection = require('../config/database');
 
 var authorityCheck = require('../public/javascripts/module/authority')
 
+var password = require('../public/javascripts/module/password')
+
 /* GET home page. */
 router.post('/login', function (req, res, next) {
-    var id = req.body.id;
-    var pw = req.body.pw;
+    var body = req.body;
+    var id = body.id;
+    var pw = body.pw;
 
-    var params = [id, pw];
-
-    var sql = 'SELECT ID, name FROM USER WHERE ID=? AND PW=?';
-    getConnection((conn) => {
-        conn.query(sql, params, function (err, rows, fields) {
-            if(err) console.log('[ERROR] /login has some problems.. query is not executed.\n' + err)
-            else {
-                if(rows.length == 1 && rows[0].ID == id) {
-
-                    authorityCheck(rows[0].ID, 'AC001', function(result) {
-                        if(result == 'true') {
-                            console.log('\x1b[33m%s\x1b[0m', '[INFO] user login success! USER: ' + id); 
-                    
-                            //create session
-                            req.session.user = {
-                                id: rows[0].ID,
-                                name: rows[0].name,
-                                authorized: true
-                            }
-        
-                            res.redirect('/main');  
+    password.comparePWwithHASH(id, pw, (err, result) => {
+        if(err) {
+            console.log('[ERROR] login has problem\n' + err);
+            res.render('index')
+        }
+        else {
+            if(result == 'positive') {
+                authorityCheck(id, 'AC001', function(result) {
+                    if(result == 'true') {
+                        console.log('\x1b[33m%s\x1b[0m', '[INFO] user login success! USER: ' + id); 
+                
+                        //create session
+                        req.session.user = {
+                            id: id,
+                            authorized: true
                         }
-                        else {
-                            console.log('\x1b[33m%s\x1b[0m', '[INFO] user login failed.. USER: ' + id + ' has not enogh authority');
-                            res.render('index')
-                        }
-                    })
-                }
-                else {
-                    console.log('\x1b[33m%s\x1b[0m', '[INFO] user login failed.. USER: ' + id + ' typed wrong password');
-                    res.render('index')
-                }
+    
+                        res.redirect('/main');  
+                    }
+                    else {
+                        console.log('\x1b[33m%s\x1b[0m', '[INFO] user login failed.. USER: ' + id + ' has not enogh authority');
+                        res.render('index')
+                    }
+                })
             }
-        });
-        conn.release();
-    })
+        }
+    });
 })
 
 router.get('/logout', function (req, res, next) {
@@ -65,6 +59,41 @@ router.get('/logout', function (req, res, next) {
         console.log('\x1b[33m%s\x1b[0m', '[WARN] not permitted access(logout)');
         res.redirect('/');
     }
+})
+
+router.post('/test', function(req, res, next) {
+    var body = req.body;
+    var id = req.body.id;
+    var pw = req.body.pw;
+
+    password.comparePWwithHASH(id, pw, (err, result) => {
+        if(err) {
+            console.log('[ERROR] login has problem\n' + err);
+            res.render('index')
+        }
+        else {
+            if(result == 'positive') {
+                authorityCheck(id, 'AC001', function(result) {
+                    if(result == 'true') {
+                        console.log('\x1b[33m%s\x1b[0m', '[INFO] user login success! USER: ' + id); 
+                
+                        //create session
+                        req.session.user = {
+                            id: rows[0].ID,
+                            name: rows[0].name,
+                            authorized: true
+                        }
+    
+                        res.redirect('/main');  
+                    }
+                    else {
+                        console.log('\x1b[33m%s\x1b[0m', '[INFO] user login failed.. USER: ' + id + ' has not enogh authority');
+                        res.render('index')
+                    }
+                })
+            }
+        }
+    });
 })
 
 module.exports = router;

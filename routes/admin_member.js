@@ -3,6 +3,7 @@ var router = express.Router();
 
 const getConnection = require('../config/database');
 const authorityCheck = require('../public/javascripts/module/authority')
+const password = require('../public/javascripts/module/password')
 
 // 로그인 세션 + 권한 체크 미들웨어
 router.use(function(req, res, next) {
@@ -87,10 +88,10 @@ router.post('/iddupchk', function(req, res, next) {
 router.post('/create', function(req, res, next) {
 
     getConnection((conn) => {
-        var sql = 'INSERT INTO USER(ID, PW, name, phone, email, deptID, posID) ';
-        sql = sql + 'VALUES(?,?,?,?,?,?,?)';
+        var sql = 'INSERT INTO USER(ID, name, phone, email, deptID, posID) ';
+        sql = sql + 'VALUES(?,?,?,?,?,?)';
         var body = req.body;
-        var param = [body.id, body.pw, body.name, body.phone, body.email, body.dept, body.pos];
+        var param = [body.id, body.name, body.phone, body.email, body.dept, body.pos];
 
         conn.query(sql, param, function(err) {
             if(err) {
@@ -98,7 +99,15 @@ router.post('/create', function(req, res, next) {
                 res.render('error')
             }
             else {
-                res.json('positive')
+                password.storePWasHASH(body.id, body.pw, (err) => {
+                    if(err) {
+                        console.log('[ERROR] storing pw as hash has problem\n' + err);
+                        res.render('error');
+                    }
+                    else {
+                        res.json('positive')
+                    }
+                })
             }
         })
 
