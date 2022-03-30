@@ -34,7 +34,7 @@ router.post('/login', function (req, res, next) {
                     }
                     else {
                         console.log('\x1b[33m%s\x1b[0m', '[INFO] user login failed.. USER: ' + id + ' has not enogh authority');
-                        res.render('index')
+                        res.render('authorityError_login')
                     }
                 })
             }
