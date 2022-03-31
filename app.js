@@ -5,11 +5,18 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var logger = require('morgan');
 
+// <------------- Router ------------->
+
 var indexRouter = require('./routes/index');
 var memberRouter = require('./routes/member');
+
+var itemRouter = require('./routes/item');
+
 var adminMemberRouter = require('./routes/admin_member');
 var adminAuthorityRouter = require('./routes/admin_authority');
 var adminDeptRouter = require('./routes/admin_dept');
+
+// <------------- /Router ------------->
 
 var app = express();
 
@@ -31,6 +38,9 @@ app.use(expressSession({
 
 app.use('/', indexRouter);
 app.use('/member', memberRouter);
+
+app.use('/item', itemRouter);
+
 app.use('/memberManage', adminMemberRouter);
 app.use('/authorityManage', adminAuthorityRouter);
 app.use('/deptManage', adminDeptRouter);
