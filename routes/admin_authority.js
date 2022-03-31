@@ -145,8 +145,9 @@ router.get('/group/remove', function(req, res, next) {
 router.post('/group/remove', function(req, res, next) {
     
     getConnection((conn) => {
-        var sql = 'UPDATE Groups SET isDelete=1 WHERE groupID=?'
-        var params = [req.body.id];
+        var sql = 'UPDATE Groups SET isDelete=1 WHERE groupID=?;'
+        sql = sql + 'DELETE FROM GroupAuthority WHERE groupID=?;'
+        var params = [req.body.id, req.body.id];
 
         conn.query(sql, params, function(err) {
             if(err) {
