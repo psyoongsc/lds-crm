@@ -1,0 +1,13 @@
+<% for(var i=0; i<items.length; i++) {%>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td><%= items[i].code %></td>
+        <td><%= items[i].itemName %></td>
+        <td><%= items[i].price %></td>
+        <td>
+            <a href="" class="btn border-shadow update" onclick='updateButton("<%= items[i].code %>")'>
+                <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+            </a>
+        </td>
+    </tr>
+<% } %>

@@ -14,14 +14,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="/stylesheets/layout/user_manage/body.css">
+    <link rel="stylesheet" href="/stylesheets/layout/item_manage/body.css">
 
 </head>
 <body>
     
     <div id="header" class="container">
         <div class="form-title text-center">
-            <h2 class="text-dark">LDS CRM 영업담당자 관리</h2>
+            <h2 class="text-dark">LDS CRM 품목 관리</h2>
         </div>
     </div>
 
@@ -33,19 +33,25 @@
                 <div>
                     <form action="#">
                         <div class="box-nav d-flex justify-between">
-                            <button id="new-user" class="btn">
-                                <span class="text-gradient">New User <i class="fas fa-user"></i></span>
+                            <button id="new-user" class="btn btn-primary">
+                                <span class="text-gradient">품목 추가</i></span>
                             </button>
+
+                            <select id="count-picker" class="selectpicker">
+                                <option>5</option>
+                                <option>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                                <option>100</option>
+                            </select>
                         </div>
                         <table class="table">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>이름</th>
-                                    <th>휴대전화</th>
-                                    <th>이메일</th>
-                                    <th>부서</th>
-                                    <th>직책</th>
+                                    <th></th>
+                                    <th>CODE</th>
+                                    <th>품목명</th>
+                                    <th>가격(1year) <br>단위: 원</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -53,6 +59,14 @@
                                 <%- include('include/_show') %>
                             </tbody>
                         </table>
+                        <div class="box-nav d-flex justify-between">
+                            <button id="delete-item" class="btn btn-danger">삭제</button>
+                            <div>
+                                <label for="num-picker">페이지</label>
+                                <input type="number" class="form-control" style="width:60px" name="num-picker" id="num-picker" min="1" max="" value="1">
+                                <button id="shift-page" class="btn btn-secondary">이동</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -63,7 +77,15 @@
 </html>
 
 <script>
+    $(document).ready(function() {
+        $('#count-picker').val('<%= perPage %>').prop("selected", true)
+    })
+
     $('#new-user').on('click', function() {
-        window.open('/item/create', '품목 추가', 'width=1200, height=720');
+        window.open('/memberManage/create', '영업담당자 추가', 'width=1200, height=720');
+    })
+
+    $('#count-picker').on('change', function() {
+        window.location = "/item?page=<%= page %>&perPage=" + $(this).val();
     })
 </script>
