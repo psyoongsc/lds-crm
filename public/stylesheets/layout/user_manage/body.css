@@ -20,6 +20,7 @@
 
 .text-center{
     text-align: center;
+    vertical-align: middle;
 }
 
 #header{
@@ -49,7 +50,7 @@ table{
   
   .table td, .table th{
     padding: .75em;
-    vertical-align: top;
+    vertical-align: middle;
     text-align: center;
     border-top: 1px solid var(--border);
   }

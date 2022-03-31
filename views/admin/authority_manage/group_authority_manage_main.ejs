@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LDS CRM</title>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -33,12 +38,12 @@
                                 <option value="" selected disabled>선택해주세요</option>
                                 <%- include('include/_showGroups') %>
                             </select>
-                            <a href="" id="group_create_btn" class="border-shadow">
+                            <button id="group_create_btn" class="btn">
                                 <span class="text-gradient">그룹추가<i class="fa-solid fa-circle-plus"></i></span>
-                            </a>
-                            <a href="" id="group_remove_btn" class="border-shadow">
-                                <span class="text-gradient">그룹삭제<i class="fa-solid fa-circle-minus"></i></span>
-                            </a>
+                            </button>
+                            <button id="group_remove_btn" class="btn">
+                                <span class="text-gradient">그룹삭제<i class="fa-solid fa-circle-minus"></i></span>      
+                            </button>
                         </div>
                         <table id="authorities" class="table">
                             <thead class="thead-dark">
@@ -54,7 +59,7 @@
                         </table>
 
                         <div class="box-nav d-flex text-center">
-                            <button id="group_authority_apply">
+                            <button id="group_authority_apply" class="btn">
                                 <span class="text-gradient">적용<i class="fa-solid fa-floppy-disk"></i></span>
                             </button>
                         </div>
