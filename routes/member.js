@@ -38,6 +38,9 @@ router.post('/login', function (req, res, next) {
                     }
                 })
             }
+            else {
+                res.redirect('/')
+            }
         }
     });
 })

@@ -55,3 +55,20 @@ exports.comparePWwithHASH = function(ID, pw, callback) {
         conn.release();
     })
 }
+
+exports.changPW = function(ID, pw, callback) {
+
+    getConnection((conn) => {
+        const salt = crypto.randomBytes(128).toString('base64')
+        const loginHash = getHash(pw, salt);
+
+        var sql = 'UPDATE USER SET salt=?, loginHash=? WHERE ID=?;'
+        var params = [salt, loginHash, ID]
+        
+        conn.query(sql, params, function(err) {
+            callback(err);
+        })
+
+        conn.release();
+    })
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LDS CRM</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+
+    <main id="site-main" >
+        <div class="container" >
+            <div class="form-title text-center">
+                <h2 class="text-dark">비밀번호 수정</h2>
+                <span class="text-light">비밀번호 수정에는 신중해주시기 바랍니다.</span>
+            </div>
+
+            <div id="update_user">
+                <div class="form-group">
+                    <label for="pw" class="text-light">비밀번호</label><p></p>
+                    <input type="password" name="pw" id="pw" value="" placeholder="새로운 비밀번호 입력">
+                </div>
+                <div class="form-group">
+                    <label for="pwRE" class="text-light">비밀번호 재입력</label><p></p>
+                    <input type="password" name="pwRE" id="pwRE" value="" placeholder="새로운 비밀번호 재입력">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn text-dark update" id="signup">변경 저장</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+
+    $("#signup").click(function() {
+
+        if(blankChk() == 0) {
+            alert("모든 정보를 입력해 주세요.");
+            return;
+        }
+
+        if(pwCheck() == 0) {
+            alert("비밀번호가 일치하지 않습니다.")
+            return;
+        }
+
+        $.ajax({
+            url: '/memberManage/pw-change',
+            type: 'POST',
+            data: {
+                id: "<%= id %>",
+                pw: $("#pw").val(),
+            },
+            success: function(result) {
+                if(result == 'positive') {
+                    alert("수정이 완료 되었습니다.")
+                    window.parent.location.reload();
+                    window.close();
+                } else {
+                    alert("수정에 문제가 생겼습니다. 잠시 후 다시 시도해 주세요.")
+                }
+            }
+        })
+    })
+
+    function blankChk() {
+        var pw = $("#pw").val();
+        var pwRE = $("#pwRE").val();
+
+        var data = [pw, pwRE];
+        for(var i=0; i<data.length; i++) {
+            if(data[i] == '') { return 0; }
+        }
+
+        return 1;
+    }
+
+    function pwCheck() {
+        var pw = $("#pw").val();
+        var pwRE = $("#pwRE").val();
+
+        if(pw == pwRE) {
+            return 1;
+        }
+        else { 
+            return 0;
+        }
+    }
+</script>
+</html>

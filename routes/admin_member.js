@@ -161,6 +161,27 @@ router.post('/update', function(req, res, next) {
     })
 })
 
+router.get('/pw-change/:id', function(req, res, next) {
+
+    res.render('admin/user_manage/user_manage_changePW', {id: req.params.id})
+})
+
+router.post('/pw-change', function(req, res, next) {
+    var body = req.body;
+    var id = body.id;
+    var pw = body.pw;
+
+    password.changPW(id, pw, (err) => {
+        if(err) {
+            console.log('[ERROR] changing password has problem\n' + err)
+            res.render('error');
+        }
+        else {
+            res.json('positive');
+        }
+    })
+})
+
 //유저 삭제
 router.post('/remove', function(req, res, next) {
 
