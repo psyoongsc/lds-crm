@@ -1,6 +1,7 @@
 <% for(var i=0; i<items.length; i++) {%>
     <tr>
         <td><input type="checkbox"></td>
+        <td><%= perPage * (page - 1) + i+1 %></td>
         <td><%= items[i].code %></td>
         <td><%= items[i].itemName %></td>
         <td><%= items[i].price %></td>

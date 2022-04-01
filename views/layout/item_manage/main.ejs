@@ -37,6 +37,15 @@
                                 <span class="text-gradient">품목 추가</i></span>
                             </button>
 
+                            <div class="input-group" style="width:50%; text-align: center;">
+                                <div class="form-outline" style="width:90%">
+                                    <input type="search" id="search-text" class="form-control" placeholder="Search (CODE, 품목명 검색가능)" value="<%= search %>" />
+                                </div>
+                                <button type="button" id="search-btn" class="btn btn-primary" style="width:10%;">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+
                             <select id="count-picker" class="selectpicker">
                                 <option>5</option>
                                 <option>10</option>
@@ -49,9 +58,10 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th></th>
+                                    <th>No.</th>
                                     <th>CODE</th>
                                     <th>품목명</th>
-                                    <th>가격(1year) <br>단위: 원</th>
+                                    <th>가격(1year)</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -61,10 +71,15 @@
                         </table>
                         <div class="box-nav d-flex justify-between">
                             <button id="delete-item" class="btn btn-danger">삭제</button>
+
+                            <div>
+                                검색결과: <%= counts %>개
+                            </div>
+
                             <div>
                                 <label for="num-picker">페이지</label>
-                                <input type="number" class="form-control" style="width:60px" name="num-picker" id="num-picker" min="1" max="" value="1">
-                                <button id="shift-page" class="btn btn-secondary">이동</button>
+                                <input type="number" class="form-control" style="width:60px" name="num-picker" id="num-picker" min="1" max="<%= counts / perPage + 1 %>" value="<%= page %>">
+                                <button type="button" id="shift-page" class="btn btn-secondary">이동</button>
                             </div>
                         </div>
                     </form>
@@ -86,6 +101,18 @@
     })
 
     $('#count-picker').on('change', function() {
-        window.location = "/item?page=<%= page %>&perPage=" + $(this).val();
+        window.location = "/item?page=1&perPage=" + $(this).val() + "&search=" + $('#search-text').val();
+    })
+
+    $('#shift-page').on('click', function() {
+        window.location = "/item?page=" + $('#num-picker').val() + "&perPage=" + $('#count-picker').val() + "&search=" + $('#search-text').val();
+    })
+
+    $('#search-btn').on('click', function() {
+        window.location = "/item?page=1&perPage=" + $('#count-picker').val() + "&search=" + $('#search-text').val();
+    })
+
+    $('#num-picker').on('change', function() {
+        // 페이지 피커의 값이 1 미만, 최대 페이지 초과할 경우 숫자 조정하는 로직 필요
     })
 </script>

@@ -53,13 +53,13 @@
 }
 
 /* 사이드 메뉴 */
-input[type="search"] {
-    width: 180px;
+#sidebar-search{
+    width: 200px;
     margin: 0 auto;
-    margin-left: 9px;
+    margin-left: 0px;
     border: 2px solid #797979;
     font-size: 14px;
-    margin-top: 10px;
+    margin-top: 0px;
     padding: 4px 0 4px 14px;
     border-radius: 50px;
 }
