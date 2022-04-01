@@ -33,8 +33,8 @@ exports.comparePWwithHASH = function(ID, pw, callback) {
         var sql = 'SELECT salt, loginHash FROM USER WHERE ID=?';
         var param = [ID];
 
-        conn.query(sql, param, function(err, rows, fields) {
-            if(err) {
+        var execSql = conn.query(sql, param, function(err, rows, fields) {
+            if(err || rows.length != 1) {
                 callback(err, 'negative');
             }
             else {
@@ -51,6 +51,8 @@ exports.comparePWwithHASH = function(ID, pw, callback) {
                 }
             }
         })
+
+        console.log(execSql.sql)
 
         conn.release();
     })
