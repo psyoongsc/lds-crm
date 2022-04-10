@@ -31,9 +31,9 @@
         <main id="site-main">
             <div class="container">
                 <div>
-                    <form action="#">
+                    <form id="my-style-form">
                         <div class="box-nav d-flex justify-between">
-                            <button id="new-user" class="btn btn-primary">
+                            <button type="button" id="new-user" class="btn btn-primary">
                                 <span class="text-gradient">품목 추가</i></span>
                             </button>
 
@@ -78,7 +78,7 @@
 
                             <div>
                                 <label for="num-picker">페이지</label>
-                                <input type="number" class="form-control" style="width:60px" name="num-picker" id="num-picker" min="1" max="<%= counts / perPage + 1 %>" value="<%= page %>">
+                                <input type="number" class="form-control" style="width:60px" name="num-picker" id="num-picker" min="1" max="<%= Math.floor(counts / perPage + 1) %>" value="<%= page %>">
                                 <button type="button" id="shift-page" class="btn btn-secondary">이동</button>
                             </div>
                         </div>
@@ -112,7 +112,16 @@
         window.location = "/item?page=1&perPage=" + $('#count-picker').val() + "&search=" + $('#search-text').val();
     })
 
-    $('#num-picker').on('change', function() {
-        // 페이지 피커의 값이 1 미만, 최대 페이지 초과할 경우 숫자 조정하는 로직 필요
+    $('#num-picker').on('keyup', function(k) {
+        if($(this).val() > Number("<%= Math.floor(counts / perPage + 1) %>")) {
+            $(this).prop('value', "<%= Math.floor(counts / perPage + 1) %>")
+        }
+    })
+
+    // num-picker에서 엔터 눌렸을때 submit 처리
+
+    $('#my-style-form').submit(function(e) {
+        e.preventDefault();
+        $('#search-btn').click();
     })
 </script>

@@ -8,6 +8,8 @@ router.get('/', function(req, res, next) {
     var perPage = Number(req.query.perPage) || 10;
     var search = '%'+ (req.query.search || '') +'%';
 
+    if(page < 1) page = 1;
+
     getConnection((conn => {
         var sql = 'SELECT code, itemName, CONCAT(FORMAT(price, 0), "원") as price FROM Item '
         sql = sql + 'WHERE LOWER(code) LIKE LOWER(?) OR  REPLACE(LOWER(itemName), " ", "") LIKE REPLACE(LOWER(?), " ", "") '
